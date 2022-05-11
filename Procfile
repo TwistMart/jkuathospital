@@ -1,1 +1,1 @@
-web: gunicorn patients.wsgi --log-file -
+web: python manage.py migrate && gunicorn patients.wsgi --log-file -
