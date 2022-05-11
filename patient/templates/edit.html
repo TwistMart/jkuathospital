@@ -1,0 +1,66 @@
+{% extends 'add.html' %}
+
+<!-- Navbar content(icon+title)-->
+{% block nav-briefcase %}                        
+<i class="fas fa-user-edit">  </i>&nbsp;&nbsp; {{patient.name}}                        
+{% endblock nav-briefcase %}
+
+<!-- card title in add.html extended here -->
+{% block card-title %} 
+Registered at: <span class="text-dark">{{patient.created_at| date:'m/d/Y (H:i)'}}</span> 
+{% endblock card-title %}
+
+<!--Add button extended here-->
+{% block btn-add %}
+<i class=" fas fa-hdd"></i>&nbsp;&nbsp; Save
+{% endblock btn-add %}
+
+<!-- Reset button -->
+{% block btn-reset %}
+<button type="reset" class="btn btn-secondary btn-sm"> <i class="fas fa-sync-alt"></i>&nbsp;&nbsp; Reset</button>
+{% endblock btn-reset %} 
+
+<!--Block form  action-->
+{% block action %} action="/edit_patient" {% endblock action %} 
+
+
+
+<!-- all <inputs value=""> extended here -->
+<!-- name-->
+{% block value-name %}
+value="{{patient.name}}" 
+{% endblock value-name %}
+
+<!-- phone-->
+{% block value-phone %}
+value="{{patient.phone}}" 
+{% endblock value-phone %}
+
+<!-- email-->
+{% block value-email %} 
+value="{{patient.email}}" 
+{% endblock value-email %}
+
+<!-- age-->
+{% block value-age %} 
+value="{{patient.age}}" 
+{% endblock value-age %}
+
+
+
+<!-- gender-->
+{% block gender %} 
+<option style="background-color: #d3d3d3; color: #007bff;">{{patient.gender}} </option>  
+{% endblock gender %}
+
+<!-- note -->
+{% block value-note %}{{patient.note}}{% endblock value-note %}
+
+
+<!--To make id appear inside the form  and then use type="hidden" to make id disappear-->
+{% block id-hidden %}
+<input type="hidden" value="{{patient.id}}" name="id">
+{% endblock id-hidden %}
+
+
+

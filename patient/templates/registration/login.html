@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+<!-- Navbar content(icon+title)-->
+{% block nav-briefcase %}                        
+<i class="fas fa-stethoscope"> </i>&nbsp;&nbsp; login 
+                        
+{% endblock nav-briefcase %}
+
+<!--Button in navbar-->
+{% block btn-nav %}
+<a href="{% url 'frontend' %}" class="btn btn-outline-primary btn-sm border-light text-light" id="btn-nav">Go Back</a>
+ {% endblock btn-nav %}
+
+
+<!--page content -->
+{% block content%}
+
+<div class="container mt-5">
+    <div class="card p-3 border-dark">
+        <span class="btn btn-outline-dark mt-3"> <i class="fas fa-lock"> &nbsp; &nbsp; RESTRICTED ACCESS</i></span>
+        <form method="POST" autocomplete="off" novalidate>
+            {% csrf_token %}
+
+            <div class="input-group mb-3 mt-5">
+                <span class="input-group-text"><i class="fas fa-user-alt"></i></span>
+                <input type="text" class="form-control" name="username" placeholder="Username">
+            </div>
+
+            <div class="input-group mb-3">
+                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                <input type="password" class="form-control" name="password" placeholder="Password">
+            </div>
+
+            <input class=" btn btn-primary btn-sm mt-4 mb-3" type="submit" value="Enter" id="btn-enter">
+        </form>
+
+    </div>
+
+    <!--message from backend-->
+    {% if form.errors %}
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        
+    <script>        
+        swal("Denied!", "Enter your credentials correctly", "error")       
+    </script>
+    
+    {% endif %}
+
+
+    <!-- Heart pulse -->
+    <center id="heart">        
+        <i class="fa fa-heartbeat fa-10x blink_me" aria-hidden="true" ></i>
+    </center>
+
+    
+</div>
+
+
+{% endblock content %}

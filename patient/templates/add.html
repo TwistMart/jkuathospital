@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+<!-- Navbar content(icon+title)-->
+{% block nav-briefcase %}                        
+<i class="fas fa-user-plus">  </i>&nbsp;&nbsp; Add patient                        
+{% endblock nav-briefcase %}
+
+<!--  read time -->
+{% block time %}
+    <center>
+        <span id="clock" style="color: #89cff0;"></span>
+    </center>
+{% endblock time %}
+
+<!--Button in navbar-->
+{% block btn-nav %}
+<a class="btn btn-outline-primary btn-sm border-light text-light" id="btn-nav" data-bs-toggle="modal" data-bs-target="#logoutModal">Logout</a>
+ {% endblock btn-nav %}
+
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card card-body border-dark text-primary mt-5">
+                <span class="text-center">{% block card-title %} FILL OUT THE FORM BELOW {% endblock card-title %}</span>
+            </div>
+            <form  {% block action %} action="/add_patient" {% endblock action %} method="POST" autocomplete="off"  enctype="multipart/form-data" class="card p-3 border-dark mt-3">
+               {% csrf_token %}
+                <div class="input-group input-group-sm mb-3">
+                    <span class="input-group-text side-label">Name</span>
+                    <input type="text" class="form-control" name="name" placeholder="First and Last name" {% block value-name %}{% endblock value-name %}>
+                </div>
+                
+                <div class="input-group input-group-sm mb-3">
+                    <span class="input-group-text side-label">Phone</span>
+                    <input type="text" class="form-control" name="phone" placeholder="patient phone" {% block value-phone %}{% endblock value-phone %}> 
+                </div>
+                <div class="input-group input-group-sm mb-3">
+                    <span class="input-group-text side-label">Email</span>
+                    <input type="text" class="form-control" name="email" placeholder="patient email" {% block value-email %}{% endblock value-email %} >
+                </div>
+                <div class="input-group input-group-sm mb-3">
+                    <span class="input-group-text side-label">Age</span>
+                    <input type="text" class="form-control" name="age" placeholder="patient age" {% block value-age %}{% endblock value-age %} >
+                </div>
+                <div class="input-group input-group-sm mb-3">
+                    <label class="input-group-text side-label">Gender</label>
+                    <select class="form-select" name="gender"> 
+                        {% block gender %}
+                        <option value="" hidden>Select the gender </option>   
+                        {% endblock gender %}                       
+                        <option disabled> </option>                                         
+                        <option>M</option>
+                        <option>F</option>                        
+                    </select>
+                </div>
+                <div class="form-group">
+                    <textarea class="form-control" name="note" rows="7"  placeholder="Description is optional....">{% block value-note %}{% endblock value-note %}</textarea>
+                </div>
+                <div class="d-grid gap-2 mt-2">
+                    <button type="submit" class="btn btn-primary btn-sm">
+                        {% block btn-add %}
+                        <i class=" fas fa-plus"></i>&nbsp;&nbsp; Add
+                        {% endblock btn-add %}
+                    </button>
+
+                <!-- Reset button in (edit.html) denied here-->
+                {% block btn-reset %} {% endblock btn-reset %} 
+
+
+                    <a href="{% url 'backend' %}" class="btn btn-dark btn-sm"><i class="fas fa-chevron-left"></i> &nbsp;&nbsp; Back</a>
+                </div>
+
+                <!--ID hidden (denied here)-->
+                {% block id-hidden %}
+                {% endblock id-hidden %}
+
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

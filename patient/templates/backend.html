@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+
+<!-- Navbar content(icon+title)-->
+{% block nav-briefcase %}                        
+<i class="fas fa-hospital-user"> </i>&nbsp;&nbsp; patient                        
+{% endblock nav-briefcase %}
+
+<!--  read time -->
+{% block time %} 
+    <center>
+        <span id="clock" style="color: #89cff0;"></span>
+    </center>
+{% endblock time %}
+
+<!--Button in navbar-->
+{% block btn-nav %}
+<a class="btn btn-outline-primary btn-sm border-light text-light" id="btn-nav" data-bs-toggle="modal" data-bs-target="#logoutModal">Logout</a>
+ {% endblock btn-nav %}
+
+
+<!--page content-->
+
+{% block content %}
+
+<div class="container">
+    <br>
+    <!--Add button and get username-->
+
+    <div class="d-flex justify-content-between">
+        <a href="{% url 'add_patient' %}" class="btn btn-outline-primary btn-sm"> <i class="fas fa-plus"></i> &nbsp;
+            &nbsp; Add Patient</a>
+        <span>
+            Welcome: <strong><span class="text-primary"> {{user.get_username}}</span></strong> 
+
+        </span>
+    </div>
+
+    <!--Input Search + Button Search + Button Reset-->
+    <form>
+        <div class="input-group input-group-sm mb-3 mt-4">
+            <input name="q" type="text" class="form-control" placeholder="Search for..." value="{{request.GET.q}}">
+            <button class="btn btn-secondary"> <i class="fas fa-search"></i> </button>
+            <a href="{% url 'backend' %}" class="btn btn-dark" style="margin-left:2px;"><i class="fas fa-sync-alt"></i></a>
+        </div>
+    </form>
+
+    <!--Table appear in backend page-->
+    <center>
+        <table class="table table-bordered table-sm mt-4" style="text-align: center; font-size: 14px;">
+            <thead class="table-primary">
+                <tr> <!--Total percentage here must be 100%-->
+                    <th style="width:21%;">Name</th>
+                    <th style="width:15%;">Phone</th>
+                    <th style="width:21%;">Email</th>
+                    <th style="width:8%;">Age</th>
+                    <th style="width:7%;">Gender</th>
+                    <th style="width:18%;">Registered</th>
+                    <th style="width:10%;" colspan="2">Action</th>
+                </tr>
+            </thead>
+            <!--Data from backend -->
+
+            {% for patient in patients %}
+
+            <tr id="chk_td">
+                <td>{{patient.name}}</td>
+                <td>{{patient.phone}}</td>
+                <td>{{patient.email}}</td>
+                <td>{{patient.age}}</td>
+                <td>{{patient.gender}}</td>
+                <td>{{patient.created_at| date:'m/d/Y (H:i)'}}</td>
+                <td>
+                    <a class="btn btn-primary" href="{% url 'patient' patient.id %}" title="Edit-patient">
+                        <i class="fas fa-pen"></i>
+                    </a>
+                </td>
+                <td>
+                    <a class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#deleteModal{{ patient.pk }}" title="Delete-patient">
+                        <i class="fas fa-trash-alt"> </i>
+                    </a>
+                </td>
+            </tr>
+              
+            <!-- Modal -- delete confirmation -->
+            <div class="modal fade" id="deleteModal{{ patient.pk }}" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel"><i class="fas fa-trash-alt"></i>&nbsp;&nbsp; Delete Patient</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                    <div class="text-center text-danger"><i class="fas fa-times-circle fa-5x mb-4 mt-2"></i></div>
+                    <div class="text-center text-danger">
+                        <span> DO YOU WANT TO DELETE THIS PATIENT ???</span>
+                        <div class="text-dark mt-3 mb-2">Patient: <strong> {{patient.name}}</strong></div>
+                    </div>
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                    <a href="{% url 'delete_patient' patient.id %}" type="button" class="btn btn-outline-danger btn-sm">Delete</a>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+
+            {% endfor %}
+
+
+        </table>
+    </center>
+
+    
+  
+    <!--Pagination -->
+
+    <nav class="mt-4">
+        {% if patients.has_other_pages %}
+        <ul class="pagination justify-content-left">
+
+            {% if patients.has_previous %}
+            <a href="?page=1" class="btn btn-outline-primary mb-4" style="width: 60px; border-radius: 1px; border: 1px solid #d3d3d3;"> First</a>
+            <li class="page-item"><a class="page-link" href="?page={{ patients.previous_page_number}}"><i class="fas fa-angle-double-left"></i></a></li>
+            
+            {% else %}
+            <li class="page-item disabled"></li>
+            {% endif %}
+
+            {% for i in patients.paginator.page_range %}
+
+                {% if patients.number == i %}            
+                <li class="page-item active="><span class="page-link">{{ i }}<span class="sr-only"></span></span></li>
+
+                {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{i}}</a></li>
+                {% endif %}
+
+            {% endfor %}
+            
+            {% if patients.has_next%}            
+            <li class="page-item"><a class="page-link" href="?page={{patients.next_page_number}}"><i class="fas fa-angle-double-right"></i></a></li>
+            
+            <a href="?page={{patients.paginator.num_pages}}" class="btn btn-outline-primary mb-4" style="width: 60px; border-radius: 1px; border: 1px solid #d3d3d3; border-left:none;"> Last</a>
+            {% else %}
+            <li class="page-item disabled"></li>
+            {% endif %}   
+                  
+        </ul>
+        {% endif%}
+    </nav>
+
+    {% for message in messages %}
+
+     {% if message.tags == 'success' %}
+     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+     <script>
+         var y="{{message}}";
+         swal("Perfect!", y, "success")
+     </script>    
+     {% endif %}
+
+    {% endfor %}
+
+</div> <!--End of the container-->
+
+<!--if no patient . show this message-->
+
+<span class="text-danger" id="no-data"></span> 
+
+
+{% endblock content %}

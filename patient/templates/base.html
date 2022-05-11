@@ -1,0 +1,115 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Favicon-->
+    <link href={% static "images/favicon.ico" %} rel="shortcut icon">
+
+
+<!--Logo-->
+    <link href={% static "images/logo.ico" %} rel="shortcut icon">
+
+
+<!-- Static CSS-->
+    <link href={% static "css/style.css" %} rel="stylesheet">
+
+
+
+<!--Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<!-- Font Awesome-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.1.1/css/all.css" integrity="sha384-/frq1SRXYH/bSyou/HUp/hib7RVN1TawQYja658FEOodR/FQBKVqT9Ol+Oz3Olq5" crossorigin="anonymous">
+    <title>hospital</title>
+</head>
+<body>
+
+    <div class="wrapper">
+        <header>
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <div class="col-sm"> 
+                    <a class="navbar-brand flex-grow-1" style="text-align: center; color: #fff; margin-left: 25px;">                        
+                        {% block nav-briefcase %}                        
+                        <i class="fas fa-briefcase-medical"> </i> &nbsp;&nbsp; Jkuat Hospital                         
+                        {% endblock nav-briefcase %}
+                    </a>
+                </div>
+
+                <!--  put clock in all backend pages to read time -->
+                {% block time %} {% endblock time %}
+
+
+
+                <div class="col-sm">
+                    {% block btn-nav %}
+                    <a href="{% url 'backend' %}" class="btn btn-outline-info btn-sm border-light" id="btn-nav">Login</a>
+                     {% endblock btn-nav %}
+                </div>
+
+
+            </nav>
+
+        </header>
+      
+
+ <!--block content must be empty  and we extend it to other pages-->
+    {% block content %}
+
+    {% endblock content %}
+
+
+    </div> <!--end of our wrapper-->
+
+    <!-- our footer -->
+    <footer class="bg-dark text-center text-lg-start text-light" id="footer">
+        <div class=" text-center p-3" style="background-color: rgba(0,0,0,0.2);">
+            Copyright &copy; {% now "Y" %} <span> All rights reserved </span> | Made with
+            <i class="text-danger fas fa-heartbeat blink_me" style="font-size:15px;"></i> by
+            <a href="https://linkkme.herokuapp.com" target="_blank" style="color: #0dcaf0; text-decoration: none;"> Martin Irungu </a>
+        </div>
+    </footer>
+
+  <!-- Modal-- logout confirmation -->
+  <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="logoutModalLabel"><i class="fas fa-sign-out-alt"></i>&nbsp;&nbsp; Logout</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center">
+            <span class="text-danger"><i class="fas fa-sign-out-alt fa-3x mt-3"></i></span>
+            <div class="mt-4 mb-4 text-danger"> ARE YOU SURE YOU WANT TO LOGOUT ?</div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+            <a href="{% url 'logout' %}" type="button" class="btn btn-outline-danger btn-sm">Logout</a>
+        </div>
+        </div>
+    </div>
+    </div>
+
+
+<!--Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+<!-- Jquery-->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+
+<!--Static js-->
+<script src={% static "js/script.js" %}></script>
+
+<script>
+    (function blink(){
+        $(' .blink_me').fadeOut(1000).fadeIn(1000, blink);
+
+    })();
+</script>
+
+    
+</body>
+</html>
